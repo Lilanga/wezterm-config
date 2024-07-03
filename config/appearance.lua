@@ -22,7 +22,7 @@ return {
          source = { Color = colors.background },
          height = '100%',
          width = '100%',
-         opacity = 0.96,
+         opacity = 0.95,
       },
    },
 
@@ -44,6 +44,7 @@ return {
       top = 12,
       bottom = 7,
    },
+   window_decorations = "RESIZE",
    window_close_confirmation = 'NeverPrompt',
    window_frame = {
       active_titlebar_bg = '#090909',
