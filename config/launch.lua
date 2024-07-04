@@ -6,16 +6,24 @@ local options = {
 }
 
 if platform.is_win then
-   options.default_prog = { 'pwsh' }
+   options.default_prog = { 'nu' }
    options.launch_menu = {
-      { label = 'PowerShell Core', args = { 'pwsh' } },
-      { label = 'PowerShell Desktop', args = { 'powershell' } },
+      { label = 'PowerShell Desktop', args = { 'powershell', '-NoLogo' } },
+      { label = 'PowerShell Core', args = { 'pwsh', '-NoLogo' } },
       { label = 'Command Prompt', args = { 'cmd' } },
       { label = 'Nushell', args = { 'nu' } },
       {
          label = 'Git Bash',
-         args = { 'C:\\Users\\kevin\\scoop\\apps\\git\\current\\bin\\bash.exe' },
+         args = { 'C:/Program Files/Git/bin/bash.exe' },
       },
+      {
+         label = 'WSL Ubuntu',
+         args = { 'wsl', 'bash' },
+      },
+      { label = 'Yori', args = { 'C:/Users/lilan/AppData/Local/Yori/Yori.exe' } }, 
+      { label = 'Python', args = { 'python' } },
+      { label = 'Node.js', args = { 'node' } },
+      { label = 'Deno', args = { 'deno' } },
    }
 elseif platform.is_mac then
    options.default_prog = { '/opt/homebrew/bin/fish', '-l' }

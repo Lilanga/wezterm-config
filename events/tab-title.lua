@@ -1,5 +1,5 @@
 local wezterm = require('wezterm')
-
+local mux = wezterm.mux
 -- Inspired by https://github.com/wez/wezterm/discussions/628#discussioncomment-1874614
 
 local nf = wezterm.nerdfonts
@@ -62,6 +62,11 @@ local _push = function(bg, fg, attribute, text)
 end
 
 M.setup = function()
+   wezterm.on('gui-startup', function()
+      local tab, pane, window = mux.spawn_window({})
+      window:gui_window():maximize()
+   end)
+   
    wezterm.on('format-tab-title', function(tab, _tabs, _panes, _config, hover, max_width)
       __cells__ = {}
 
