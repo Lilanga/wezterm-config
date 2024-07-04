@@ -3,7 +3,22 @@ return {
    ssh_domains = {
       {
          name = 'RPI1',
-         remote_address = '192.168.1.4',
+         remote_address = '192.168.1.21',
+         username = 'pi',
+      },
+      {
+         name = 'RPI2',
+         remote_address = '192.168.1.22',
+         username = 'pi',
+      },
+      {
+         name = 'RPI3',
+         remote_address = '192.168.1.23',
+         username = 'pi',
+      },
+      {
+         name = 'RPI4',
+         remote_address = '192.168.1.24',
          username = 'pi',
       },
    },

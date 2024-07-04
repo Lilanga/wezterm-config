@@ -4,7 +4,7 @@ local umath = require('utils.math')
 local nf = wezterm.nerdfonts
 local M = {}
 
-local SEPARATOR_CHAR = nf.oct_dash .. ' '
+local SEPARATOR_CHAR = nf.md_dots_vertical .. ' '
 
 local discharging_icons = {
    nf.md_battery_10,
@@ -62,7 +62,21 @@ end
 
 local _set_date = function()
    local date = wezterm.strftime(' %a %H:%M:%S')
-   _push(date, nf.fa_calendar, colors.date_fg, colors.date_bg, true)
+   _push(date, nf.oct_calendar, colors.date_fg, colors.date_bg, true)
+end
+
+local _set_tardy = function(pane)
+   local meta = pane:get_metadata() or {}
+   if meta.is_tardy then
+      local secs = meta.since_last_response_ms / 1000.0
+      local tardy = string.format('tardy: %5.1fs⏳', secs)
+      _push(tardy, nf.cod_pulse, colors.date_fg, colors.date_bg, true)
+   else
+      local domain = pane:get_domain_name()
+      if domain then
+         _push(domain, nf.cod_server_process, colors.date_fg, colors.date_bg, true)
+      end
+   end
 end
 
 local _set_battery = function()
@@ -86,8 +100,20 @@ local _set_battery = function()
 end
 
 M.setup = function()
-   wezterm.on('update-right-status', function(window, _pane)
+   wezterm.on('update-right-status', function(window, pane)
       __cells__ = {}
+
+      _set_tardy(pane)
+      _set_date()
+      _set_battery()
+
+      window:set_right_status(wezterm.format(__cells__))
+   end)
+
+   wezterm.on('update-status', function(window, pane)
+      __cells__ = {}
+
+      _set_tardy(pane)
       _set_date()
       _set_battery()
 
