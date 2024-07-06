@@ -1,10 +1,17 @@
 local wezterm = require('wezterm')
 local umath = require('utils.math')
+local colors_utils = require('utils.colors')
+local weather_service = require('utils.weather')
+
 
 local nf = wezterm.nerdfonts
 local M = {}
 
 local SEPARATOR_CHAR = nf.md_dots_vertical .. ' '
+local weather_icons = {
+   temperature = '',
+   humidity = '',
+}
 
 local discharging_icons = {
    nf.md_battery_10,
@@ -31,15 +38,7 @@ local charging_icons = {
    nf.md_battery_charging,
 }
 
-local colors = {
-   date_fg = '#fab387',
-   date_bg = 'rgba(0, 0, 0, 0.4)',
-   battery_fg = '#f9e2af',
-   battery_bg = 'rgba(0, 0, 0, 0.4)',
-   separator_fg = '#74c7ec',
-   separator_bg = 'rgba(0, 0, 0, 0.4)',
-}
-
+local colors = colors_utils.RIGHT_STATUS
 local __cells__ = {} -- wezterm FormatItems (ref: https://wezfurlong.org/wezterm/config/lua/wezterm/format.html)
 
 ---@param text string
@@ -60,6 +59,15 @@ local _push = function(text, icon, fg, bg, separate)
    end
 end
 
+local _set_weather = function()
+   local weather = weather_service.update_weather()
+
+   if weather ~= nil then
+      _push(weather.temperature .. nf.md_temperature_celsius, weather_icons.temperature, colors.weather_fg, colors.weather_bg, true)
+      _push(weather.humidity .. '%', weather_icons.humidity, colors.weather_fg, colors.weather_bg, true)
+   end
+end
+
 local _set_date = function()
    local date = wezterm.strftime(' %a %H:%M:%S')
    _push(date, nf.oct_calendar, colors.date_fg, colors.date_bg, true)
@@ -70,11 +78,11 @@ local _set_tardy = function(pane)
    if meta.is_tardy then
       local secs = meta.since_last_response_ms / 1000.0
       local tardy = string.format('tardy: %5.1fs⏳', secs)
-      _push(tardy, nf.cod_pulse, colors.date_fg, colors.date_bg, true)
+      _push(tardy, nf.cod_pulse, colors.domain_fg, colors.domain_bg, true)
    else
       local domain = pane:get_domain_name()
       if domain then
-         _push(domain, nf.cod_server_process, colors.date_fg, colors.date_bg, true)
+         _push(domain, nf.cod_server_process, colors.domain_fg, colors.domain_bg, true)
       end
    end
 end
@@ -103,6 +111,7 @@ M.setup = function()
    wezterm.on('update-right-status', function(window, pane)
       __cells__ = {}
 
+      _set_weather()
       _set_tardy(pane)
       _set_date()
       _set_battery()
@@ -113,6 +122,7 @@ M.setup = function()
    wezterm.on('update-status', function(window, pane)
       __cells__ = {}
 
+      _set_weather()
       _set_tardy(pane)
       _set_date()
       _set_battery()

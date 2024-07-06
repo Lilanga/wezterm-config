@@ -1,4 +1,6 @@
 local wezterm = require 'wezterm';
+local mocha = require('utils.colors').MOCHA
+
 local M = {}
 
 local function basename(s)
@@ -23,7 +25,7 @@ local NYA_ICON = utf8.char(0xf61a)
 local VIM_ICON = utf8.char(0xe62b)
 local PAGER_ICON = utf8.char(0xf718)
 local FUZZY_ICON = utf8.char(0xf0b0)
-local HOURGLASS_ICON = utf8.char(0xf252)
+local BASH_ICON = ''
 local SUNGLASS_ICON = utf8.char(0xf9df)
 
 local PYTHON_ICON = utf8.char(0xf820)
@@ -40,7 +42,7 @@ local SUB_IDX = {"₁","₂","₃","₄","₅","₆","₇","₈","₉","₁₀",
 M.setup = function()
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
 
-        local edge_background = "#121212"
+    local edge_background = mocha.surface0_trnsp
     local background = "#4E4E4E"
     local foreground = "#1C1B19"
     local dim_foreground = "#3A3A3A"
@@ -94,7 +96,7 @@ M.setup = function()
     elseif exec_name == "bb" or exec_name == "cmd-clj" or exec_name == "janet" or exec_name == "hy" then
         title_with_icon = LAMBDA_ICON .. " " .. exec_name:gsub("bb", "Babashka"):gsub("cmd%-clj", "Clojure")
     else
-        title_with_icon = HOURGLASS_ICON .. " " .. exec_name
+        title_with_icon = BASH_ICON .. " " .. exec_name
     end
     if pane_title:match("^Administrator: ") then
         title_with_icon = title_with_icon .. " " .. ADMIN_ICON
@@ -129,10 +131,10 @@ M.setup = function()
 return {
     colors = {
         tab_bar = {
-        background = "#121212",
-        new_tab = {bg_color = "#121212", fg_color = "#FCE8C3", intensity = "Bold"},
-        new_tab_hover = {bg_color = "#121212", fg_color = "#FBB829", intensity = "Bold"},
-        active_tab = {bg_color = "#121212", fg_color = "#FCE8C3"},
+        background = mocha.surface0_trnsp,
+        new_tab = {bg_color = mocha.surface0_trnsp, fg_color = "#FCE8C3", intensity = "Bold"},
+        new_tab_hover = {bg_color = mocha.surface0_trnsp, fg_color = "#FBB829", intensity = "Bold"},
+        active_tab = {bg_color = mocha.surface0_trnsp, fg_color = "#FCE8C3"},
         },
     },
 }
