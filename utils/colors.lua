@@ -2,7 +2,7 @@ local wezterm = require 'wezterm'
 
 local color_default_fg_light = wezterm.color.parse("#cacaca") -- 💩
 local color_default_fg_dark = wezterm.color.parse("#303030")
-
+local color_transparent_tab_bg = 'rgba(50, 50, 70, 0.6)'
 return {
     VERIDIAN = {
         bg = wezterm.color.parse("#4D8060"),
@@ -68,7 +68,7 @@ return {
         surface2 = '#585b70',
         surface1 = '#45475a',
         surface0 = '#313244',
-        surface0_trnsp = 'rgba(49, 50, 68, 0.4)',
+        surface0_trnsp = color_transparent_tab_bg,
         base = '#1f1f28',
         mantle = '#181825',
         crust = '#11111b',
@@ -95,14 +95,14 @@ return {
     },
     RIGHT_STATUS = {
         date_fg = '#fab387',
-        date_bg = 'rgba(49, 50, 68, 0.4)',
+        date_bg = color_transparent_tab_bg,
         battery_fg = '#f9e2af',
-        battery_bg = 'rgba(49, 50, 68, 0.4)',
+        battery_bg = color_transparent_tab_bg,
         separator_fg = '#74c7ec',
-        separator_bg = 'rgba(49, 50, 68, 0.4)',
+        separator_bg = color_transparent_tab_bg,
         domain_fg = '#FBB829',
-        domain_bg = 'rgba(49, 50, 68, 0.4)',
+        domain_bg = color_transparent_tab_bg,
         weather_fg = '#13A10E',
-        weather_bg = 'rgba(49, 50, 68, 0.4)',
+        weather_bg = color_transparent_tab_bg,
     }
 }
