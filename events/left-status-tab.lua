@@ -39,6 +39,54 @@ local SUP_IDX = {"¹","²","³","⁴","⁵","⁶","⁷","⁸","⁹","¹⁰",
 local SUB_IDX = {"₁","₂","₃","₄","₅","₆","₇","₈","₉","₁₀",
                     "₁₁","₁₂","₁₃","₁₄","₁₅","₁₆","₁₇","₁₈","₁₉","₂₀"}
 
+-- Box drawing characters for pane split visualization
+local BOX_H = "─"  -- horizontal line
+local BOX_V = "│"  -- vertical line
+local BOX_TL = "┌" -- top-left corner
+local BOX_TR = "┐" -- top-right corner
+local BOX_BL = "└" -- bottom-left corner
+local BOX_BR = "┘" -- bottom-right corner
+local BOX_FILL = "█" -- filled block for active pane
+local BOX_EMPTY = "▒" -- medium shade block for better contrast
+
+-- Function to create visual pane representation
+local function create_pane_visual(active_pane_index, total_panes)
+    local visual
+    if total_panes == 1 then
+        visual = BOX_TL .. BOX_FILL .. BOX_TR
+    elseif total_panes == 2 then
+        -- Vertical split representation
+        if active_pane_index == 1 then
+            visual = BOX_TL .. BOX_FILL .. BOX_V .. BOX_EMPTY .. BOX_TR
+        else
+            visual = BOX_TL .. BOX_EMPTY .. BOX_V .. BOX_FILL .. BOX_TR
+        end
+    elseif total_panes == 3 then
+        -- Three pane representation (one large, two small)
+        local panes = {BOX_EMPTY, BOX_EMPTY, BOX_EMPTY}
+        panes[active_pane_index] = BOX_FILL
+        visual = BOX_TL .. panes[1] .. BOX_V .. panes[2] .. BOX_V .. panes[3] .. BOX_TR
+    else
+        -- For 4+ panes, show as grid-like representation
+        local active_char = BOX_FILL
+        local inactive_char = BOX_EMPTY
+        local result = BOX_TL
+        for i = 1, math.min(total_panes, 4) do
+            result = result .. (i == active_pane_index and active_char or inactive_char)
+            if i < math.min(total_panes, 4) then
+                result = result .. BOX_V
+            end
+        end
+        if total_panes > 4 then
+            result = result .. "+" .. SUP_IDX[total_panes - 4]
+        end
+        visual = result .. BOX_TR
+    end
+    
+    -- Add spacing around the visual for better separation
+    return " " .. visual .. " "
+end
+
 M.setup = function()
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
 
@@ -106,8 +154,13 @@ M.setup = function()
         left_arrow = SOLID_LEFT_MOST
     end
     local id = SUB_IDX[tab.tab_index+1]
-    local pid = SUP_IDX[tab.active_pane.pane_index+1]
-    local title = " " .. wezterm.truncate_right(title_with_icon, max_width-6) .. " "
+    local pane_count = #tab.panes
+    local pid = ""
+    if pane_count > 1 then
+        local active_pane_index = tab.active_pane.pane_index + 1
+        pid = create_pane_visual(active_pane_index, pane_count)
+    end
+    local title = " " .. wezterm.truncate_right(title_with_icon or "Unknown", max_width-8) .. " "
 
 
     return {
@@ -119,8 +172,8 @@ M.setup = function()
         {Foreground={Color=foreground}},
         {Text=id},
         {Text=title},
-        {Foreground={Color=dim_foreground}},
-        {Text=pid},
+        {Foreground={Color=pane_count > 1 and (tab.is_active and "#B91C1C" or hover and "#1C1B19" or "#7FB4CA") or dim_foreground}},
+        {Text=pane_count > 1 and pid or SUP_IDX[pane_count]},
         {Background={Color=edge_background}},
         {Foreground={Color=edge_foreground}},
         {Text=SOLID_RIGHT_ARROW},
