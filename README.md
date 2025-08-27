@@ -174,6 +174,19 @@ Most of the key bindings revolve around a <kbd>SUPER</kbd> and <kbd>SUPER_REV</k
 | <kbd>SUPER_REV</kbd>+<kbd>[</kbd> | Move Tab Left  |
 | <kbd>SUPER_REV</kbd>+<kbd>]</kbd> | Move Tab Right |
 
+##### Tabs: Toggle Tab-bar
+
+| Keys                          | Action         |
+| ----------------------------- | -------------- |
+| <kbd>SUPER</kbd>+<kbd>9</kbd> | Toggle tab bar |
+
+##### Tabs: Title
+
+| Keys                              | Action             |
+| --------------------------------- | ------------------ |
+| <kbd>SUPER</kbd>+<kbd>0</kbd>     | Rename Current Tab |
+| <kbd>SUPER_REV</kbd>+<kbd>0</kbd> | Undo Rename        |
+
 &nbsp;
 
 #### Windows
