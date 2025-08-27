@@ -2,6 +2,7 @@ local wezterm = require('wezterm')
 local platform = require('utils.platform')()
 local backdrops = require('utils.backdrops')
 local act = wezterm.action
+local nf = wezterm.nerdfonts
 
 local mod = {}
 
@@ -60,7 +61,7 @@ local keys = {
    -- tabs --
    -- tabs: spawn+close
    { key = 't',          mods = mod.SUPER,     action = act.SpawnTab('DefaultDomain') },
-   { key = 't',          mods = mod.SUPER_REV, action = act.SpawnTab({ DomainName = 'WSL:Ubuntu' }) },
+   { key = 't',          mods = mod.SUPER_REV, action = act.ShowLauncherArgs({ title = nf.fa_rocket .. '  Select/Search:', flags = 'FUZZY|LAUNCH_MENU_ITEMS|DOMAINS' }) },
    { key = 'w',          mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
 
    -- tabs: navigation

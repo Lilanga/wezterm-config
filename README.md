@@ -159,11 +159,11 @@ Most of the key bindings revolve around a <kbd>SUPER</kbd> and <kbd>SUPER_REV</k
 
 ##### Tabs: Spawn+Close
 
-| Keys                              | Action                                |
-| --------------------------------- | ------------------------------------- |
-| <kbd>SUPER</kbd>+<kbd>t</kbd>     | `SpawnTab` <sub>(DefaultDomain)</sub> |
-| <kbd>SUPER_REV</kbd>+<kbd>f</kbd> | `SpawnTab` <sub>(WSL:Ubuntu)</sub>    |
-| <kbd>SUPER_REV</kbd>+<kbd>w</kbd> | `CloseCurrentTab`                     |
+| Keys                              | Action                                         |
+| --------------------------------- | ---------------------------------------------- |
+| <kbd>SUPER</kbd>+<kbd>t</kbd>     | `SpawnTab` <sub>(DefaultDomain)</sub>          |
+| <kbd>SUPER_REV</kbd>+<kbd>t</kbd> | `ShowLauncher` <sub>(Fuzzy Shell Selector)</sub> |
+| <kbd>SUPER_REV</kbd>+<kbd>w</kbd> | `CloseCurrentTab`                              |
 
 ##### Tabs: Navigation
 
