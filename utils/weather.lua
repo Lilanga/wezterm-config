@@ -3,7 +3,6 @@ local M = {}
 M.last_triggered_time = nil
 
 M.update_weather = function()
-
     local current_time = os.time()
     if M.last_triggered_time ~= nil and (current_time - M.last_triggered_time) < 60 then
         return wezterm.GLOBAL.room_weather
@@ -13,13 +12,13 @@ M.update_weather = function()
     local success, stdout, _stderr = wezterm.run_child_process({
         'curl',
         '--silent',
-        'https://bf3423d69765fb7f905abe4f3b277726.balena-devices.com/data',
+        'https://[DeviceID].balena-devices.com/data',
     })
     if not success or not stdout then
         return
     end
 
-    wezterm.GLOBAL.room_weather =  wezterm.json_parse(stdout)
+    wezterm.GLOBAL.room_weather = wezterm.json_parse(stdout)
     return wezterm.GLOBAL.room_weather
 end
 
