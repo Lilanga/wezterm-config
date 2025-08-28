@@ -3,14 +3,12 @@ local wezterm = require('wezterm')
 local nf = wezterm.nerdfonts
 local M = {}
 
-local GLYPH_SEMI_CIRCLE_LEFT = nf.ple_left_half_circle_thick --[[ '' ]]
-local GLYPH_SEMI_CIRCLE_RIGHT = nf.ple_right_half_circle_thick --[[ '' ]]
-local GLYPH_KEY_TABLE = nf.md_table_key --[[ '󱏅' ]]
-local GLYPH_KEY = nf.md_key --[[ '󰌆' ]]
+local GLYPH_KEY_TABLE = nf.oct_tasklist --[[ '' ]]
+local GLYPH_KEY = nf.oct_tools --[[ '' ]]
 
 local colors = {
-   glyph_semi_circle = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#fab387' },
-   text = { bg = '#fab387', fg = '#1c1b19' },
+   glyph_semi_circle = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#6aa84f' },
+   text = { bg = '#6aa84f', fg = '#fff2cc' },
 }
 
 local __cells__ = {}
@@ -25,23 +23,35 @@ local _push = function(text, fg, bg)
    table.insert(__cells__, { Text = text })
 end
 
+-- Get display name from name (e.g. "resize_pane" ruturns " Resize Pane")
+-- Lookup uisng given input string and return matching display name
+---@param name string
+---@return string
+local _get_display_name = function(name)
+   if name == 'resize_pane' then
+      return 'Resize Pane '
+   elseif name == 'resize_font' then
+      return 'Resize Font '
+   end
+   return name
+end
+
+
 M.setup = function()
    wezterm.on('update-right-status', function(window, _pane)
       __cells__ = {}
 
       local name = window:active_key_table()
       if name then
-         _push(GLYPH_SEMI_CIRCLE_LEFT, colors.glyph_semi_circle.fg, colors.glyph_semi_circle.bg)
+         _push(' ', colors.text.fg, colors.text.bg)
          _push(GLYPH_KEY_TABLE, colors.text.fg, colors.text.bg)
-         _push(' ' .. string.upper(name), colors.text.fg, colors.text.bg)
-         _push(GLYPH_SEMI_CIRCLE_RIGHT, colors.glyph_semi_circle.fg, colors.glyph_semi_circle.bg)
+         _push(' ' .. _get_display_name(name), colors.text.fg, colors.text.bg)
       end
 
       if window:leader_is_active() then
-         _push(GLYPH_SEMI_CIRCLE_LEFT, colors.glyph_semi_circle.fg, colors.glyph_semi_circle.bg)
+         _push(' ', colors.text.fg, colors.text.bg)
          _push(GLYPH_KEY, colors.text.fg, colors.text.bg)
          _push(' ', colors.text.fg, colors.text.bg)
-         _push(GLYPH_SEMI_CIRCLE_RIGHT, colors.glyph_semi_circle.fg, colors.glyph_semi_circle.bg)
       end
 
       window:set_left_status(wezterm.format(__cells__))
