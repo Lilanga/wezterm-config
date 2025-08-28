@@ -160,7 +160,7 @@ M.setup = function()
         local active_pane_index = tab.active_pane.pane_index + 1
         pid = create_pane_visual(active_pane_index, pane_count)
     end
-    local title = " " .. wezterm.truncate_right(title_with_icon or "Unknown", max_width-8) .. " "
+    local title = " " .. wezterm.truncate_right(title_with_icon or "Unknown", math.max(8, max_width-6)) .. " "
 
 
     return {
